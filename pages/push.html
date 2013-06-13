@@ -1,0 +1,194 @@
+
+<!DOCTYPE HTML>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>push - Tom Pesman</title>
+	<meta name="author" content="Tom Pesman">
+
+	
+	<meta name="description" content="For the game nummi I&#8217;ve created with 9 to 5 we needed to send push notifications. Lots of them! Therefore I created this Ruby on Rails gem &hellip;">
+	
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<link href="http://feeds.feedburner.com/tnuxnet" rel="alternate" title="Tom Pesman" type="application/atom+xml">
+	
+	<link rel="canonical" href="http://tnux.net/pages/push.html">
+	<link href="/favicon.png" rel="shortcut icon">
+	<link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+	<!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+	<link href='http://fonts.googleapis.com/css?family=Open+Sans:400italic,400,700' rel='stylesheet' type='text/css'>
+	<!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+</head>
+
+
+<body>
+	<div class="container">
+		<div class="left-col">
+			<div class="intrude-less">
+			<header id="header" class="inner"><div class="profilepic">
+	<img src='http://www.gravatar.com/avatar/af4530c0ca1194b83f7c6f5b415f4b69?s=160' alt='Profile Picture' style='width: 160px;'>
+</div>
+<h1><a href="/">Tom Pesman</a></h1>
+<p class="subtitle"></p>
+<nav id="main-nav"><ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+  <li><a href="/pages/revit.html">Revit</a></li>
+  <li><a href="/pages/rubyonrails.html">Ruby on Rails</a></li>
+  <li><a href="/pages/about.html">Info</a></li>
+</ul>
+</nav>
+<nav id="sub-nav">
+	<div class="social">
+		
+		
+		
+		
+		<a class="github" href="https://github.com/tompesman" title="GitHub">GitHub</a>
+		
+		
+		<a class="linkedin" href="http://www.linkedin.com/in/tompesman">LinkedIn</a>
+		
+		
+		
+		
+		
+		<a class="rss" href="http://feeds.feedburner.com/tnuxnet" title="RSS">RSS</a>
+		
+	</div>
+</nav>
+<!-- <hgroup>
+  <h1><a href="/">Tom Pesman</a></h1>
+  
+</hgroup> -->
+
+</header>				
+			</div>
+		</div>	
+		<div class="mid-col">
+			
+				
+			
+			<div class="mid-col-container">
+				<div id="content" class="inner"><article class="page">
+    
+    <h1 class="title">Push</h1>
+    
+    <div class="entry-content"><p>For the game <a href="http://nummi-app.com">nummi</a> I&#8217;ve created with <a href="http://9-to-5.nl">9 to 5</a> we needed to send push notifications. Lots of them! Therefore I created this Ruby on Rails gem which takes care of sending the push notification to Android and iOS devices. The project is hosted at github and can be found <a href="http://github.com/tompesman/push-core">here</a>.</p>
+
+<p>The gem allows us to send up to a million push messages a day without any problems. It takes care of notifying the Ruby on Rails application of invalid device tokens so they can be removed from the database.</p>
+
+<h2>Features</h2>
+
+<p>This gem has the following features:</p>
+
+<ul>
+<li>Multi-App</li>
+<li>Multi-Provider (APNS, GCM, C2DM)</li>
+<li>Integrated feedback processing</li>
+<li>Rake task to cleanup the database</li>
+<li>Database for storage (no external dependencies)</li>
+</ul>
+
+
+<h2>Github project pages</h2>
+
+<p>You can find the projects on Github:</p>
+
+<ul>
+<li><a href="http://github.com/tompesman/push-core">push-core</a></li>
+<li><a href="http://github.com/tompesman/push-apns">push-apns</a></li>
+<li><a href="http://github.com/tompesman/push-c2dm">push-c2dm</a></li>
+<li><a href="http://github.com/tompesman/push-gcm">push-gcm</a></li>
+</ul>
+
+
+<h2>Example</h2>
+
+<p>After configuration sending a message is as easy as:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="ss">Push</span><span class="p">:</span><span class="ss">:MessageApns</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
+</span><span class='line'>    <span class="ss">app</span><span class="p">:</span> <span class="s1">&#39;app_name&#39;</span><span class="p">,</span>
+</span><span class='line'>    <span class="ss">device</span><span class="p">:</span> <span class="s1">&#39;&lt;APNS device_token here&gt;&#39;</span><span class="p">,</span>
+</span><span class='line'>    <span class="ss">alert</span><span class="p">:</span> <span class="s1">&#39;Hello World&#39;</span><span class="p">,</span>
+</span><span class='line'>    <span class="ss">sound</span><span class="p">:</span> <span class="s1">&#39;1.aiff&#39;</span><span class="p">,</span>
+</span><span class='line'>    <span class="ss">badge</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+</span><span class='line'>    <span class="ss">expiry</span><span class="p">:</span> <span class="mi">1</span><span class="o">.</span><span class="n">day</span><span class="o">.</span><span class="n">to_i</span><span class="p">,</span>
+</span><span class='line'>    <span class="n">attributes_for_device</span><span class="p">:</span> <span class="p">{</span><span class="ss">key</span><span class="p">:</span> <span class="s1">&#39;MSG&#39;</span><span class="p">})</span>
+</span></code></pre></td></tr></table></div></figure>
+
+</div>
+</article>
+
+
+
+
+	<div class="share">
+	<div class="addthis_toolbox addthis_default_style ">
+	
+	
+	<a class="addthis_button_tweet"></a>
+	
+	
+	<a class="addthis_counter addthis_pill_style"></a>
+	</div>
+  <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid="></script>
+</div>
+
+
+
+</div>
+			</div>
+			<footer id="footer" class="inner"><p>
+  Copyright &copy; 2013 - Tom Pesman -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+			<script src="/javascripts/slash.js"></script>
+<script src="/javascripts/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+	$('.fancybox').fancybox();
+})(jQuery);
+</script> <!-- Delete or comment this line to disable Fancybox -->
+
+
+
+
+	<script type="text/javascript">
+		var _gaq = _gaq || [];
+		_gaq.push(['_setAccount', 'UA-1817613-7']);
+		_gaq.push(['_trackPageview']);
+
+		(function() {
+			var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+			ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+			var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+		})();
+	</script>
+
+
+
+
+		</div>
+	</div>
+</body>
+</html>

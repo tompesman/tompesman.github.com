@@ -1,0 +1,211 @@
+
+<!DOCTYPE HTML>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>XEN, Ruby Enterprise Edition and 4gb seg fixup - Tom Pesman</title>
+	<meta name="author" content="Tom Pesman">
+
+	
+	<meta name="description" content="My new CentOS XEN server has a virtual machine which serves as a dedicated web server. The on the console and in /var/log/messages the following &hellip;">
+	
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<link href="http://feeds.feedburner.com/tnuxnet" rel="alternate" title="Tom Pesman" type="application/atom+xml">
+	
+	<link rel="canonical" href="http://tnux.net/blog/2010/01/17/xen-ree-4gbsegfixup/">
+	<link href="/favicon.png" rel="shortcut icon">
+	<link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+	<!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+	<link href='http://fonts.googleapis.com/css?family=Open+Sans:400italic,400,700' rel='stylesheet' type='text/css'>
+	<!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+</head>
+
+
+<body>
+	<div class="container">
+		<div class="left-col">
+			<div class="intrude-less">
+			<header id="header" class="inner"><div class="profilepic">
+	<img src='http://www.gravatar.com/avatar/af4530c0ca1194b83f7c6f5b415f4b69?s=160' alt='Profile Picture' style='width: 160px;'>
+</div>
+<h1><a href="/">Tom Pesman</a></h1>
+<p class="subtitle"></p>
+<nav id="main-nav"><ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+  <li><a href="/pages/revit.html">Revit</a></li>
+  <li><a href="/pages/rubyonrails.html">Ruby on Rails</a></li>
+  <li><a href="/pages/about.html">Info</a></li>
+</ul>
+</nav>
+<nav id="sub-nav">
+	<div class="social">
+		
+		
+		
+		
+		<a class="github" href="https://github.com/tompesman" title="GitHub">GitHub</a>
+		
+		
+		<a class="linkedin" href="http://www.linkedin.com/in/tompesman">LinkedIn</a>
+		
+		
+		
+		
+		
+		<a class="rss" href="http://feeds.feedburner.com/tnuxnet" title="RSS">RSS</a>
+		
+	</div>
+</nav>
+<!-- <hgroup>
+  <h1><a href="/">Tom Pesman</a></h1>
+  
+</hgroup> -->
+
+</header>				
+			</div>
+		</div>	
+		<div class="mid-col">
+			
+				
+			
+			<div class="mid-col-container">
+				<div id="content" class="inner"><article class="post">
+	<h1 class="title">XEN, Ruby Enterprise Edition and 4gb Seg Fixup</h1>
+	<div class="entry-content"><p>My new CentOS XEN server has a virtual machine which serves as a dedicated web server. The on the console and in /var/log/messages the following message appeared:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>4gb seg fixup, process ruby <span class="o">(</span>pid 20252<span class="o">)</span>, cs:ip 73:00e0a636
+</span><span class='line'>printk: 151939 messages suppressed.
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The console is unusable, because every second a new message appears. The logfile is unusable as well, because it is very large and takes long to open in a text editor and interesting messages are difficult to find. After some google&#8217;ing I&#8217;ve found the following <a href="http://groups.google.com/group/emm-ruby/browse_thread/thread/1b9beffe8fa694a7/82fd6839307d9298">page</a> with some instructions to fix it. I&#8217;ve mixed up various methods, but this is the most robust one to use. It creates a wrapper around the gcc and g++ binaries with the correct parameters.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>mv /usr/bin/gcc /usr/bin/gcc.orig
+</span><span class='line'>mv /usr/bin/g++ /usr/bin/g++.orig
+</span><span class='line'><span class="nb">echo</span> <span class="s1">&#39;#!/bin/sh&#39;</span> &gt; /usr/bin/gcc
+</span><span class='line'><span class="nb">echo</span> <span class="s1">&#39;#!/bin/sh&#39;</span> &gt; /usr/bin/g++
+</span><span class='line'><span class="nb">echo</span> <span class="s1">&#39;exec gcc.orig -mno-tls-direct-seg-refs $@&#39;</span> &gt;&gt; /usr/bin/gcc
+</span><span class='line'><span class="nb">echo</span> <span class="s1">&#39;exec g++.orig -mno-tls-direct-seg-refs $@&#39;</span> &gt;&gt; /usr/bin/g++
+</span><span class='line'>chmod a+x /usr/bin/gcc
+</span><span class='line'>chmod a+x /usr/bin/g++
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Extract the Ruby Enterprise Edition. Be careful to use a fresh extracted version to compile, because the files will not be recompiled. Compile and install Ruby Enterprise Edition as stated in the manual.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>tar zxvf ruby-enterprise-1.8.7-2009.10.tar.gz
+</span><span class='line'>./ruby-enterprise-1.8.7-2009.10/installer
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Don&#8217;t forget to reinstall passenger, and off course reinstall all the gems from the old installation.</p>
+
+<p>Now you can restore gcc and g++ as this will probably break yum updates of gcc and g++.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>rm -rf /usr/bin/gcc <span class="o">&amp;&amp;</span> mv /usr/bin/gcc.orig /usr/bin/gcc
+</span><span class='line'>rm -rf /usr/bin/g++ <span class="o">&amp;&amp;</span> mv /usr/bin/g++.orig /usr/bin/g++
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Hopefully I&#8217;ve saved you guys some time ;-)</p>
+</div>
+
+</article>
+
+	<div class="share">
+	<div class="addthis_toolbox addthis_default_style ">
+	
+	
+	<a class="addthis_button_tweet"></a>
+	
+	
+	<a class="addthis_counter addthis_pill_style"></a>
+	</div>
+  <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid="></script>
+</div>
+
+
+
+<section id="comment">
+    <h1 class="title">Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+</section>
+</div>
+			</div>
+			<footer id="footer" class="inner"><p>
+  Copyright &copy; 2013 - Tom Pesman -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+			<script src="/javascripts/slash.js"></script>
+<script src="/javascripts/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+	$('.fancybox').fancybox();
+})(jQuery);
+</script> <!-- Delete or comment this line to disable Fancybox -->
+
+
+<script type="text/javascript">
+      var disqus_shortname = 'tompesman';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://tnux.net/blog/2010/01/17/xen-ree-4gbsegfixup/';
+        var disqus_url = 'http://tnux.net/blog/2010/01/17/xen-ree-4gbsegfixup/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+	<script type="text/javascript">
+		var _gaq = _gaq || [];
+		_gaq.push(['_setAccount', 'UA-1817613-7']);
+		_gaq.push(['_trackPageview']);
+
+		(function() {
+			var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+			ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+			var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+		})();
+	</script>
+
+
+
+
+		</div>
+	</div>
+</body>
+</html>

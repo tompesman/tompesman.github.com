@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Virtualisation | Tom Pesman]]></title>
+  <link href="http://tnux.net/blog/categories/virtualisation/atom.xml" rel="self"/>
+  <link href="http://tnux.net/"/>
+  <updated>2013-03-23T17:07:49+01:00</updated>
+  <id>http://tnux.net/</id>
+  <author>
+    <name><![CDATA[Tom Pesman]]></name>
+    <email><![CDATA[tom@tnux.net]]></email>
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[VMware ESXi 4.0 + QNAP TS-410]]></title>
+    <link href="http://tnux.net/blog/2010/07/10/vmware-esxi-4-0-qnap-ts-410/"/>
+    <updated>2010-07-10T10:29:00+02:00</updated>
+    <id>http://tnux.net/blog/2010/07/10/vmware-esxi-4-0-qnap-ts-410</id>
+    <content type="html"><![CDATA[<p><strong>UPDATE:</strong> There are problems with iSCSI on the QNAP with VMware. After I wrote this blog post my complete setup crashed and I lost all my virtual machines. So this blog post shows how to setup iSCSI with VMware, but do not use it with the QNAP’s. Right now I’m using NFS as a datastore with 7 virtual machines without any problems.</p>
+
+<p>I've updated my server setup at home with some new hardware. First of all a new QNAP TS-410 NAS with 4 Western Digital Caviar Green 2TB disks attached to the NAS. For my new server I will use an old HP dc7700 P4 with 5 Gb of RAM. To connect the NAS to the server I took a Cisco 8 port Gigabit switch (SLM2008).</p>
+
+<p><strong>QNAP TS-410</strong>
+First of all I installed the disks and booted the system for the first time. Using the configuration utility I configured the disks in a RAID 5 setup, so totally I have 6TB of disk space available. During this setup I also installed the latest firmware, which I took from the QNAP website. The synchronisation of the RAID 5 setup took over 24 hours! Which is quite long, but this is only done once. The reason I bought this TS-410 is because this is the cheapest 4 disk NAS with iSCSI enabled. The iSCSI we can use to connect the VMware ESXi 4.0 to the storage. In the QNAP web interface the iSCSI service should be enabled and a iSCSI target and LUN should be created. A target is similar to the SCSI card we used years ago and is used to connect the remote system with. The LUN's are similar to physical disks, but with iSCSI these are virtual. Now we have created the basis of our storage network for the VMware ESXi 4.0 server.</p>
+
+<p><strong>VMware ESXi 4.0</strong>
+First I cleaned the old HP dc7700 pc and removed the hard disks. Next I inserted an flash drive of 1 Gigabyte, but this one turned out to be broken. So I took a 2 Gigabyte disk, but 1 is sufficient. I booted from the installation CD and installed the ESXi server on the flash drive. After rebooting I was able to connect with my browser to the server. Using the console a fixed IP was given to the server. Next we need to configure the VMware ESXi 4.0 server using the vSphere Client which can be downloaded from the management IP address.</p>
+
+<p><strong>VMware vSphere Client</strong>
+In VMware vSphere Client we need to get the data storage working as the server doesn't have local storage. So open server -> configuration -> networking to add a VMkernel port to the virtual switch. This is to allow the storage adapter access the NAS.</p>
+
+<p><img src="http://wordpress.tnux.net/wp-content/uploads/2010/07/vmware-networking-1024x726.png" alt="vmware-networking" /></p>
+
+<p>Now goto storage adapters and select the properties of the iSCSI adapter. Click configure and select enable to enable the iSCSI adapter, click on dynamic discovery and add your NAS ip:3260. It is now possible to see the device in the details below.</p>
+
+<p><img src="http://wordpress.tnux.net/wp-content/uploads/2010/07/vmware-storage-1024x726.png" alt="vmware-storage" />
+<img src="http://wordpress.tnux.net/wp-content/uploads/2010/07/vmware-storage-2-1024x726.png" alt="vmware-storage2" />
+<img src="http://wordpress.tnux.net/wp-content/uploads/2010/07/vmware-storage-3-1024x726.png" alt="vmware-storage3" /></p>
+
+<p>In the storage configuration we need to add the LUN to VMware so this LUN can be used in a virtual machine.
+<img src="http://wordpress.tnux.net/wp-content/uploads/2010/07/vmware-storage-4-1024x726.png" alt="vmware-storage4" /></p>
+
+<p><strong>Cisco Switch</strong>
+To connect the NAS with all network interfaces to the switch, the switch has to be properly configured. The ports need to have the LACP option enabled.</p>
+
+<p><img src="http://wordpress.tnux.net/wp-content/uploads/2010/07/nas-network-2-1024x711.png" alt="vmware-network-2" /></p>
+
+<p>Once this is done in the management interface of the switch, the NAS needs to be configured to use the IEEE 802.3ad Dynamic Link Aggregation.</p>
+
+<p><img src="http://wordpress.tnux.net/wp-content/uploads/2010/07/nas-network-1-1024x711.png" alt="nas-network-1" /></p>
+
+<p>Finally the second network interface can be connected to the switch. Use the management interface on the switch to see if it is working correctly.</p>
+
+<p><img src="http://wordpress.tnux.net/wp-content/uploads/2010/07/nas-network-3-1024x711.png" alt="nas-network-3" /></p>
+
+<p>Now we have a nice system to experiment with. The only thing what I have to do now is to migrate my existing CentOS XEN server to this VMware system.</p>
+]]></content>
+  </entry>
+  
+</feed>

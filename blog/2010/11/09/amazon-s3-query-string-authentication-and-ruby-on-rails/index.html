@@ -1,0 +1,208 @@
+
+<!DOCTYPE HTML>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Amazon S3 Query String Authentication and Ruby on Rails - Tom Pesman</title>
+	<meta name="author" content="Tom Pesman">
+
+	
+	<meta name="description" content="Amazons S3 added this summer a new way to allow people to access your files stored on S3. This method is called Query String Authentication and by &hellip;">
+	
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<link href="http://feeds.feedburner.com/tnuxnet" rel="alternate" title="Tom Pesman" type="application/atom+xml">
+	
+	<link rel="canonical" href="http://tnux.net/blog/2010/11/09/amazon-s3-query-string-authentication-and-ruby-on-rails/">
+	<link href="/favicon.png" rel="shortcut icon">
+	<link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+	<!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+	<link href='http://fonts.googleapis.com/css?family=Open+Sans:400italic,400,700' rel='stylesheet' type='text/css'>
+	<!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+</head>
+
+
+<body>
+	<div class="container">
+		<div class="left-col">
+			<div class="intrude-less">
+			<header id="header" class="inner"><div class="profilepic">
+	<img src='http://www.gravatar.com/avatar/af4530c0ca1194b83f7c6f5b415f4b69?s=160' alt='Profile Picture' style='width: 160px;'>
+</div>
+<h1><a href="/">Tom Pesman</a></h1>
+<p class="subtitle"></p>
+<nav id="main-nav"><ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+  <li><a href="/pages/revit.html">Revit</a></li>
+  <li><a href="/pages/rubyonrails.html">Ruby on Rails</a></li>
+  <li><a href="/pages/about.html">Info</a></li>
+</ul>
+</nav>
+<nav id="sub-nav">
+	<div class="social">
+		
+		
+		
+		
+		<a class="github" href="https://github.com/tompesman" title="GitHub">GitHub</a>
+		
+		
+		<a class="linkedin" href="http://www.linkedin.com/in/tompesman">LinkedIn</a>
+		
+		
+		
+		
+		
+		<a class="rss" href="http://feeds.feedburner.com/tnuxnet" title="RSS">RSS</a>
+		
+	</div>
+</nav>
+<!-- <hgroup>
+  <h1><a href="/">Tom Pesman</a></h1>
+  
+</hgroup> -->
+
+</header>				
+			</div>
+		</div>	
+		<div class="mid-col">
+			
+				
+			
+			<div class="mid-col-container">
+				<div id="content" class="inner"><article class="post">
+	<h1 class="title">Amazon S3 Query String Authentication and Ruby on Rails</h1>
+	<div class="entry-content"><p>Amazons S3 added this summer a new way to allow people to access your files stored on S3. This method is called Query String Authentication and by generating an url for a private file you can offer access to that file for a limited amount of time. First upload a file to Amazon S3 and use the acl &#8216;private&#8217; to store the file. To generate the url for to such a link I&#8217;ve made a helper for Ruby on Rails:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">generateTemporaryURL</span><span class="p">(</span><span class="n">resource</span><span class="p">)</span>
+</span><span class='line'>  <span class="n">filename</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">#{</span><span class="no">RAILS_ROOT</span><span class="si">}</span><span class="s2">/config/amazon_s3.yml&quot;</span>
+</span><span class='line'>  <span class="n">config</span> <span class="o">=</span> <span class="no">YAML</span><span class="o">.</span><span class="n">load_file</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+</span><span class='line'>  <span class="n">bucket</span> <span class="o">=</span> <span class="n">config</span><span class="o">[</span><span class="no">ENV</span><span class="o">[</span><span class="s1">&#39;RAILS_ENV&#39;</span><span class="o">]][</span><span class="s1">&#39;bucket_name&#39;</span><span class="o">]</span>
+</span><span class='line'>  <span class="n">access_key_id</span> <span class="o">=</span> <span class="n">config</span><span class="o">[</span><span class="no">ENV</span><span class="o">[</span><span class="s1">&#39;RAILS_ENV&#39;</span><span class="o">]][</span><span class="s1">&#39;access_key_id&#39;</span><span class="o">]</span>
+</span><span class='line'>  <span class="n">secret_access_key</span> <span class="o">=</span> <span class="n">config</span><span class="o">[</span><span class="no">ENV</span><span class="o">[</span><span class="s1">&#39;RAILS_ENV&#39;</span><span class="o">]][</span><span class="s1">&#39;secret_access_key&#39;</span><span class="o">]</span>
+</span><span class='line'>  <span class="n">expires</span> <span class="o">=</span> <span class="mi">10</span><span class="o">.</span><span class="n">days</span><span class="o">.</span><span class="n">from_now</span><span class="o">.</span><span class="n">to_i</span> <span class="c1"># 10 days from now in epoch time in UTC</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">stringtosign</span> <span class="o">=</span> <span class="s2">&quot;GET</span><span class="se">\n\n\n</span><span class="si">#{</span><span class="n">expires</span><span class="si">}</span><span class="se">\n</span><span class="s2">/</span><span class="si">#{</span><span class="n">bucket</span><span class="si">}</span><span class="s2">/&quot;</span><span class="o">+</span><span class="no">ENV</span><span class="o">[</span><span class="s1">&#39;RAILS_ENV&#39;</span><span class="o">]+</span><span class="s2">&quot;/</span><span class="si">#{</span><span class="n">resource</span><span class="o">.</span><span class="n">gsub</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="s2">&quot;+&quot;</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">signature</span> <span class="o">=</span> <span class="no">Base64</span><span class="o">.</span><span class="n">encode64</span><span class="p">(</span>
+</span><span class='line'>                <span class="ss">OpenSSL</span><span class="p">:</span><span class="ss">:HMAC</span><span class="o">.</span><span class="n">digest</span><span class="p">(</span>
+</span><span class='line'>                  <span class="ss">OpenSSL</span><span class="p">:</span><span class="ss">:Digest</span><span class="o">::</span><span class="no">Digest</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s1">&#39;sha1&#39;</span><span class="p">),</span>
+</span><span class='line'>                  <span class="n">secret_access_key</span><span class="p">,</span> <span class="n">stringtosign</span><span class="o">.</span><span class="n">toutf8</span><span class="p">))</span>
+</span><span class='line'>  <span class="c1"># cleanup the signature for the url</span>
+</span><span class='line'>  <span class="n">signature</span> <span class="o">=</span> <span class="n">signature</span><span class="o">.</span><span class="n">gsub</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span><span class="s2">&quot;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">gsub</span><span class="p">(</span><span class="s2">&quot;+&quot;</span><span class="p">,</span><span class="s2">&quot;%2B&quot;</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">return</span> <span class="s2">&quot;http://</span><span class="si">#{</span><span class="n">bucket</span><span class="si">}</span><span class="s2">/&quot;</span><span class="o">+</span><span class="no">ENV</span><span class="o">[</span><span class="s1">&#39;RAILS_ENV&#39;</span><span class="o">]+</span><span class="s2">&quot;/</span><span class="si">#{</span><span class="n">resource</span><span class="o">.</span><span class="n">gsub</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="s2">&quot;+&quot;</span><span class="p">)</span><span class="si">}</span><span class="s2">?AWSAccessKeyId=</span><span class="si">#{</span><span class="n">access_key_id</span><span class="si">}</span><span class="s2">&amp;Expires=</span><span class="si">#{</span><span class="n">expires</span><span class="si">}</span><span class="s2">&amp;Signature=</span><span class="si">#{</span><span class="n">signature</span><span class="si">}</span><span class="s2">&quot;</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>This method generates an url which is valid for 10 days. I&#8217;m now 100% sure of the gsub method to convert spaces in a resource filename to a plus sign, maybe there are more characters you should be aware of. Anyway this method is based on the SWF Upload <a href="http://tnux.net/2010/01/17/swfupload-direct-to-amazon-s3-in-ruby-on-rails/">post</a>.</p>
+
+<p><strong>Update:</strong> Thanks to Simon, I&#8217;ve updated the example where it would produce an invalid signature. The plus sign in the url needs to be url encoded.</p>
+
+<p><strong>Update 2:</strong> Rob provided a Ruby 1.9 only <a href="https://gist.github.com/1032395">version</a>.</p>
+</div>
+
+</article>
+
+	<div class="share">
+	<div class="addthis_toolbox addthis_default_style ">
+	
+	
+	<a class="addthis_button_tweet"></a>
+	
+	
+	<a class="addthis_counter addthis_pill_style"></a>
+	</div>
+  <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid="></script>
+</div>
+
+
+
+<section id="comment">
+    <h1 class="title">Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+</section>
+</div>
+			</div>
+			<footer id="footer" class="inner"><p>
+  Copyright &copy; 2013 - Tom Pesman -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+			<script src="/javascripts/slash.js"></script>
+<script src="/javascripts/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+	$('.fancybox').fancybox();
+})(jQuery);
+</script> <!-- Delete or comment this line to disable Fancybox -->
+
+
+<script type="text/javascript">
+      var disqus_shortname = 'tompesman';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://tnux.net/blog/2010/11/09/amazon-s3-query-string-authentication-and-ruby-on-rails/';
+        var disqus_url = 'http://tnux.net/blog/2010/11/09/amazon-s3-query-string-authentication-and-ruby-on-rails/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+	<script type="text/javascript">
+		var _gaq = _gaq || [];
+		_gaq.push(['_setAccount', 'UA-1817613-7']);
+		_gaq.push(['_trackPageview']);
+
+		(function() {
+			var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+			ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+			var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+		})();
+	</script>
+
+
+
+
+		</div>
+	</div>
+</body>
+</html>

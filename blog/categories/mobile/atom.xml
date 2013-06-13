@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Mobile | Tom Pesman]]></title>
+  <link href="http://tnux.net/blog/categories/mobile/atom.xml" rel="self"/>
+  <link href="http://tnux.net/"/>
+  <updated>2013-03-23T17:07:49+01:00</updated>
+  <id>http://tnux.net/</id>
+  <author>
+    <name><![CDATA[Tom Pesman]]></name>
+    <email><![CDATA[tom@tnux.net]]></email>
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Nummi website is online]]></title>
+    <link href="http://tnux.net/blog/2012/01/20/nummi-website-is-online/"/>
+    <updated>2012-01-20T19:30:00+01:00</updated>
+    <id>http://tnux.net/blog/2012/01/20/nummi-website-is-online</id>
+    <content type="html"><![CDATA[<p><img class="right" src="/images/content/nummi-screenshot.png" width="250" height="250" title="Nummi iOS Screenshot" ></p>
+
+<p>Together with my sister we've released the website for the iOS application nummi! Shortly we will be able to publish the app in the AppStore. We're also working on an Android version which we'll publish within a few weeks. Please head over to the website and press the Facebook like button to receive the latest updates.</p>
+
+<p><a href="http://nummi-app.com">nummi website</a></p>
+]]></content>
+  </entry>
+  
+</feed>

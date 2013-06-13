@@ -1,0 +1,198 @@
+
+<!DOCTYPE HTML>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>VMware ESXi 4.0 + QNAP TS-410 - Tom Pesman</title>
+	<meta name="author" content="Tom Pesman">
+
+	
+	<meta name="description" content="UPDATE: There are problems with iSCSI on the QNAP with VMware. After I wrote this blog post my complete setup crashed and I lost all my virtual &hellip;">
+	
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<link href="http://feeds.feedburner.com/tnuxnet" rel="alternate" title="Tom Pesman" type="application/atom+xml">
+	
+	<link rel="canonical" href="http://tnux.net/blog/2010/07/10/vmware-esxi-4-0-qnap-ts-410/">
+	<link href="/favicon.png" rel="shortcut icon">
+	<link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+	<!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+	<link href='http://fonts.googleapis.com/css?family=Open+Sans:400italic,400,700' rel='stylesheet' type='text/css'>
+	<!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+</head>
+
+
+<body>
+	<div class="container">
+		<div class="left-col">
+			<div class="intrude-less">
+			<header id="header" class="inner"><div class="profilepic">
+	<img src='http://www.gravatar.com/avatar/af4530c0ca1194b83f7c6f5b415f4b69?s=160' alt='Profile Picture' style='width: 160px;'>
+</div>
+<h1><a href="/">Tom Pesman</a></h1>
+<p class="subtitle"></p>
+<nav id="main-nav"><ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+  <li><a href="/pages/revit.html">Revit</a></li>
+  <li><a href="/pages/rubyonrails.html">Ruby on Rails</a></li>
+  <li><a href="/pages/about.html">Info</a></li>
+</ul>
+</nav>
+<nav id="sub-nav">
+	<div class="social">
+		
+		
+		
+		
+		<a class="github" href="https://github.com/tompesman" title="GitHub">GitHub</a>
+		
+		
+		<a class="linkedin" href="http://www.linkedin.com/in/tompesman">LinkedIn</a>
+		
+		
+		
+		
+		
+		<a class="rss" href="http://feeds.feedburner.com/tnuxnet" title="RSS">RSS</a>
+		
+	</div>
+</nav>
+<!-- <hgroup>
+  <h1><a href="/">Tom Pesman</a></h1>
+  
+</hgroup> -->
+
+</header>				
+			</div>
+		</div>	
+		<div class="mid-col">
+			
+				
+			
+			<div class="mid-col-container">
+				<div id="content" class="inner"><article class="post">
+	<h1 class="title">VMware ESXi 4.0 + QNAP TS-410</h1>
+	<div class="entry-content"><p><strong>UPDATE:</strong> There are problems with iSCSI on the QNAP with VMware. After I wrote this blog post my complete setup crashed and I lost all my virtual machines. So this blog post shows how to setup iSCSI with VMware, but do not use it with the QNAP’s. Right now I’m using NFS as a datastore with 7 virtual machines without any problems.</p>
+
+<p>I&#8217;ve updated my server setup at home with some new hardware. First of all a new QNAP TS-410 NAS with 4 Western Digital Caviar Green 2TB disks attached to the NAS. For my new server I will use an old HP dc7700 P4 with 5 Gb of RAM. To connect the NAS to the server I took a Cisco 8 port Gigabit switch (SLM2008).</p>
+
+<p><strong>QNAP TS-410</strong>
+First of all I installed the disks and booted the system for the first time. Using the configuration utility I configured the disks in a RAID 5 setup, so totally I have 6TB of disk space available. During this setup I also installed the latest firmware, which I took from the QNAP website. The synchronisation of the RAID 5 setup took over 24 hours! Which is quite long, but this is only done once. The reason I bought this TS-410 is because this is the cheapest 4 disk NAS with iSCSI enabled. The iSCSI we can use to connect the VMware ESXi 4.0 to the storage. In the QNAP web interface the iSCSI service should be enabled and a iSCSI target and LUN should be created. A target is similar to the SCSI card we used years ago and is used to connect the remote system with. The LUN&#8217;s are similar to physical disks, but with iSCSI these are virtual. Now we have created the basis of our storage network for the VMware ESXi 4.0 server.</p>
+
+<p><strong>VMware ESXi 4.0</strong>
+First I cleaned the old HP dc7700 pc and removed the hard disks. Next I inserted an flash drive of 1 Gigabyte, but this one turned out to be broken. So I took a 2 Gigabyte disk, but 1 is sufficient. I booted from the installation CD and installed the ESXi server on the flash drive. After rebooting I was able to connect with my browser to the server. Using the console a fixed IP was given to the server. Next we need to configure the VMware ESXi 4.0 server using the vSphere Client which can be downloaded from the management IP address.</p>
+
+<p><strong>VMware vSphere Client</strong>
+In VMware vSphere Client we need to get the data storage working as the server doesn&#8217;t have local storage. So open server -> configuration -> networking to add a VMkernel port to the virtual switch. This is to allow the storage adapter access the NAS.</p>
+
+<p><img src="http://wordpress.tnux.net/wp-content/uploads/2010/07/vmware-networking-1024x726.png" alt="vmware-networking" /></p>
+
+<p>Now goto storage adapters and select the properties of the iSCSI adapter. Click configure and select enable to enable the iSCSI adapter, click on dynamic discovery and add your NAS ip:3260. It is now possible to see the device in the details below.</p>
+
+<p><img src="http://wordpress.tnux.net/wp-content/uploads/2010/07/vmware-storage-1024x726.png" alt="vmware-storage" />
+<img src="http://wordpress.tnux.net/wp-content/uploads/2010/07/vmware-storage-2-1024x726.png" alt="vmware-storage2" />
+<img src="http://wordpress.tnux.net/wp-content/uploads/2010/07/vmware-storage-3-1024x726.png" alt="vmware-storage3" /></p>
+
+<p>In the storage configuration we need to add the LUN to VMware so this LUN can be used in a virtual machine.
+<img src="http://wordpress.tnux.net/wp-content/uploads/2010/07/vmware-storage-4-1024x726.png" alt="vmware-storage4" /></p>
+
+<p><strong>Cisco Switch</strong>
+To connect the NAS with all network interfaces to the switch, the switch has to be properly configured. The ports need to have the LACP option enabled.</p>
+
+<p><img src="http://wordpress.tnux.net/wp-content/uploads/2010/07/nas-network-2-1024x711.png" alt="vmware-network-2" /></p>
+
+<p>Once this is done in the management interface of the switch, the NAS needs to be configured to use the IEEE 802.3ad Dynamic Link Aggregation.</p>
+
+<p><img src="http://wordpress.tnux.net/wp-content/uploads/2010/07/nas-network-1-1024x711.png" alt="nas-network-1" /></p>
+
+<p>Finally the second network interface can be connected to the switch. Use the management interface on the switch to see if it is working correctly.</p>
+
+<p><img src="http://wordpress.tnux.net/wp-content/uploads/2010/07/nas-network-3-1024x711.png" alt="nas-network-3" /></p>
+
+<p>Now we have a nice system to experiment with. The only thing what I have to do now is to migrate my existing CentOS XEN server to this VMware system.</p>
+</div>
+
+</article>
+
+	<div class="share">
+	<div class="addthis_toolbox addthis_default_style ">
+	
+	
+	<a class="addthis_button_tweet"></a>
+	
+	
+	<a class="addthis_counter addthis_pill_style"></a>
+	</div>
+  <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid="></script>
+</div>
+
+
+
+<section id="comment">
+    <h1 class="title">Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+</section>
+</div>
+			</div>
+			<footer id="footer" class="inner"><p>
+  Copyright &copy; 2013 - Tom Pesman -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+			<script src="/javascripts/slash.js"></script>
+<script src="/javascripts/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+	$('.fancybox').fancybox();
+})(jQuery);
+</script> <!-- Delete or comment this line to disable Fancybox -->
+
+
+<script type="text/javascript">
+      var disqus_shortname = 'tompesman';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://tnux.net/blog/2010/07/10/vmware-esxi-4-0-qnap-ts-410/';
+        var disqus_url = 'http://tnux.net/blog/2010/07/10/vmware-esxi-4-0-qnap-ts-410/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+	<script type="text/javascript">
+		var _gaq = _gaq || [];
+		_gaq.push(['_setAccount', 'UA-1817613-7']);
+		_gaq.push(['_trackPageview']);
+
+		(function() {
+			var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+			ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+			var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+		})();
+	</script>
+
+
+
+
+		</div>
+	</div>
+</body>
+</html>

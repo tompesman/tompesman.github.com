@@ -1,0 +1,259 @@
+
+<!DOCTYPE HTML>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Plesk, Passenger (mod_rails), Ruby Enterprise Edition & Ruby on Rails - Tom Pesman</title>
+	<meta name="author" content="Tom Pesman">
+
+	
+	<meta name="description" content="Currently I have a Plesk 8.4 installation running on a CentOS 5 VPS. First I had my Ruby on Rails websites running on multiple mongrel servers ( &hellip;">
+	
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<link href="http://feeds.feedburner.com/tnuxnet" rel="alternate" title="Tom Pesman" type="application/atom+xml">
+	
+	<link rel="canonical" href="http://tnux.net/blog/2008/06/23/plesk-passenger-mod_rails-railsenterpriseedition-ruby-on-rails/">
+	<link href="/favicon.png" rel="shortcut icon">
+	<link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+	<!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+	<link href='http://fonts.googleapis.com/css?family=Open+Sans:400italic,400,700' rel='stylesheet' type='text/css'>
+	<!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+</head>
+
+
+<body>
+	<div class="container">
+		<div class="left-col">
+			<div class="intrude-less">
+			<header id="header" class="inner"><div class="profilepic">
+	<img src='http://www.gravatar.com/avatar/af4530c0ca1194b83f7c6f5b415f4b69?s=160' alt='Profile Picture' style='width: 160px;'>
+</div>
+<h1><a href="/">Tom Pesman</a></h1>
+<p class="subtitle"></p>
+<nav id="main-nav"><ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+  <li><a href="/pages/revit.html">Revit</a></li>
+  <li><a href="/pages/rubyonrails.html">Ruby on Rails</a></li>
+  <li><a href="/pages/about.html">Info</a></li>
+</ul>
+</nav>
+<nav id="sub-nav">
+	<div class="social">
+		
+		
+		
+		
+		<a class="github" href="https://github.com/tompesman" title="GitHub">GitHub</a>
+		
+		
+		<a class="linkedin" href="http://www.linkedin.com/in/tompesman">LinkedIn</a>
+		
+		
+		
+		
+		
+		<a class="rss" href="http://feeds.feedburner.com/tnuxnet" title="RSS">RSS</a>
+		
+	</div>
+</nav>
+<!-- <hgroup>
+  <h1><a href="/">Tom Pesman</a></h1>
+  
+</hgroup> -->
+
+</header>				
+			</div>
+		</div>	
+		<div class="mid-col">
+			
+				
+			
+			<div class="mid-col-container">
+				<div id="content" class="inner"><article class="post">
+	<h1 class="title">Plesk, Passenger (Mod_rails), Ruby Enterprise Edition & Ruby on Rails</h1>
+	<div class="entry-content"><p>Currently I have a Plesk 8.4 installation running on a CentOS 5 VPS. First I had my Ruby on Rails websites running on multiple mongrel servers (cluster) but it took too much RAM of my VPS and it was very complicated to add more websites. So now I’ve installed <a href="http://www.modrails.com/">Passenger</a> (make sure you check the screencast on the Passenger website!) which makes adding websites very easy. Also I’ve installed <a href="http://www.rubyenterpriseedition.com/">RubyEnterpriseEdition</a> which reduces the memory needed for Ruby applications, including Ruby on Rails. Below I’ll describe the steps I took to complete this installation.</p>
+
+<p><strong>Passenger</strong></p>
+
+<p>Just follow the steps described on the Passenger website. Run as root:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>gem install passenger
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The following command verifies if all the dependencies are installed, if not it suggests what rpm’s should be installed and exits. If all the dependencies are met, it compiles the Apache 2 module and installs the module.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>passenger-install-apache2-module
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Personally I hate installers who do a lot of stuff you can&#8217;t control, but this one does only the stuff it should do and will not break your current setup. After the module is installed you need to add the module to Apache. So I created the file <code>/etc/httpd/conf.d/passenger.conf</code> with the following contents:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>LoadModule passenger_module /usr/lib/ruby/gems/1.8/gems/passenger-2.0.1/ext/apache2/mod_passenger.so
+</span><span class='line'>PassengerRoot /usr/lib/ruby/gems/1.8/gems/passenger-2.0.1
+</span><span class='line'>PassengerRuby /usr/bin/ruby
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Restart Apache.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>/etc/init.d/httpd restart
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>At this point you have installed Passenger and the only thing to make a Ruby on Rails application work, is to point the Apache <code>DocumentRoot</code> directive to the public directory of your Rails application.</p>
+
+<p><strong>RubyEnterpriseEdition</strong></p>
+
+<p>Download RubyEnterpriseEdition (REE), extract the file and run the installer. As described on the REE website.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>wget http://rubyforge.org/frs/download.php/38777/ruby-enterprise-1.8.6-20080624.tar.gz
+</span><span class='line'>tar xzvf ruby-enterprise-1.8.6-20080624.tar.gz
+</span><span class='line'>./ruby-enterprise-1.8.6-20080624/install
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>This installer will install it’s own Ruby environment to /opt. This is good, because it will not touch your current Ruby environment. After the installation you’ll have a separate gem installed which is version 1.2.0. The version without the gem bulkupdate, which causes a lot of memory problems on VPS’es. The following commands I’ve used to install different gems. Mysql did not install easily, but with the <code>-- --with-mysql</code> it worked. Note the <code>--no-rdoc</code> and <code>--no-ri</code> because we’re on a production environment we don&#8217;t need the documentation.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>/opt/ruby-enterprise-1.8.6-20080624/bin/gem install --no-rdoc --no-ri rails
+</span><span class='line'>/opt/ruby-enterprise-1.8.6-20080624/bin/gem install --no-rdoc --no-ri -v 1.2.6 rails
+</span><span class='line'>/opt/ruby-enterprise-1.8.6-20080624/bin/gem install --no-rdoc --no-ri -v 2.0.2 rails
+</span><span class='line'>/opt/ruby-enterprise-1.8.6-20080624/bin/gem install --no-rdoc --no-ri mysql -- --with-mysql-config
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>If you have all the gems installed which you need in your Rails applications, it’s time to switch the Ruby Interpreter to the REE installation, we do this by replacing the <code>PassengerRuby</code> line in the <code>/etc/httpd/conf.d/passenger.conf</code> file.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>PassengerRuby /opt/ruby-enterprise-1.8.6-20080624/bin/ruby
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><strong>Fine-tuning</strong></p>
+
+<p>Depending on the available RAM on your VPS, you should add the following line to <code>passenger.conf</code>:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>PassengerMaxPoolSize 2
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>To prevent Passenger from invoking to many instances of the Rails app.</p>
+
+<p><strong>Plesk</strong></p>
+
+<p>The only thing you have to do in Plesk is to modify the DocumentRoot. I&#8217;ve made a app directory where I deploy my Rails application with Capistrano. Create the file vhost.conf in the config directory of your domain.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>DocumentRoot /var/www/vhosts/DOMAIN.COM/app/current/public
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>After that run the following command to let Plesk reconfigure your domain and add a include for your <code>vhost.conf</code> file.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>/usr/local/psa/admin/sbin/websrvmng -u --vhost-name<span class="o">=</span>DOMAIN.COM
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+</div>
+
+</article>
+
+	<div class="share">
+	<div class="addthis_toolbox addthis_default_style ">
+	
+	
+	<a class="addthis_button_tweet"></a>
+	
+	
+	<a class="addthis_counter addthis_pill_style"></a>
+	</div>
+  <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid="></script>
+</div>
+
+
+
+<section id="comment">
+    <h1 class="title">Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+</section>
+</div>
+			</div>
+			<footer id="footer" class="inner"><p>
+  Copyright &copy; 2013 - Tom Pesman -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+			<script src="/javascripts/slash.js"></script>
+<script src="/javascripts/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+	$('.fancybox').fancybox();
+})(jQuery);
+</script> <!-- Delete or comment this line to disable Fancybox -->
+
+
+<script type="text/javascript">
+      var disqus_shortname = 'tompesman';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://tnux.net/blog/2008/06/23/plesk-passenger-mod_rails-railsenterpriseedition-ruby-on-rails/';
+        var disqus_url = 'http://tnux.net/blog/2008/06/23/plesk-passenger-mod_rails-railsenterpriseedition-ruby-on-rails/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+	<script type="text/javascript">
+		var _gaq = _gaq || [];
+		_gaq.push(['_setAccount', 'UA-1817613-7']);
+		_gaq.push(['_trackPageview']);
+
+		(function() {
+			var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+			ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+			var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+		})();
+	</script>
+
+
+
+
+		</div>
+	</div>
+</body>
+</html>

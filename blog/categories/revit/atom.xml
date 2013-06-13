@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Revit | Tom Pesman]]></title>
+  <link href="http://tnux.net/blog/categories/revit/atom.xml" rel="self"/>
+  <link href="http://tnux.net/"/>
+  <updated>2013-03-23T17:07:49+01:00</updated>
+  <id>http://tnux.net/</id>
+  <author>
+    <name><![CDATA[Tom Pesman]]></name>
+    <email><![CDATA[tom@tnux.net]]></email>
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Free Auto Number Add-in and x86 add-ins]]></title>
+    <link href="http://tnux.net/blog/2011/12/19/free-auto-number-add-in-and-x86-add-ins/"/>
+    <updated>2011-12-19T12:28:00+01:00</updated>
+    <id>http://tnux.net/blog/2011/12/19/free-auto-number-add-in-and-x86-add-ins</id>
+    <content type="html"><![CDATA[<p><img class="right" src="/images/content/revit-auto-number.png" width="150" height="150" title="Revit Auto Number Add-in" ></p>
+
+<p>The <a href="/pages/revit-auto-number-addin.html">Auto Number Add-in</a> is now available for free, a sort of Christmas present! This add-in can Mark any element which has a Mark parameter. You can use interval, prefix, postfix and offset options to get the output you want.</p>
+
+<p>I've also added the x86 versions of the add-ins. So feel free to try these add-ins if you use 32bit!</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Save Selection Add-in]]></title>
+    <link href="http://tnux.net/blog/2011/11/16/save-selection-add-in/"/>
+    <updated>2011-11-16T15:00:00+01:00</updated>
+    <id>http://tnux.net/blog/2011/11/16/save-selection-add-in</id>
+    <content type="html"><![CDATA[<p><img class="right" src="/images/content/revit-save-selection.png" width="150" height="150" title="Revit Save Selection Add-in" ></p>
+
+<p>Yesterday Mark Wieringa of <a href="http://www.cepezed.nl">cepezed</a> pointed out the blog posting of Luke Johnson at <a href="http://whatrevitwants.blogspot.com/2011/11/quick-select-groups-of-objects-in-revit.html">What Revit Wants</a>. We thought this way of remembering a selection within Revit is a bit cumbersome. That's why I created the Revit Save Selection Add-in and it is free to download from the <a href="/pages/revit-save-selection.html">Revit Save Section</a> page. To speed up the selection process you can put the icons in the Quick Access Toolbar or assign Keyboard Shortcuts to it. Please leave a comment with your findings.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Custom Revit Add-ins explained]]></title>
+    <link href="http://tnux.net/blog/2011/08/24/custom-revit-add-ins-explained/"/>
+    <updated>2011-08-24T07:53:00+02:00</updated>
+    <id>http://tnux.net/blog/2011/08/24/custom-revit-add-ins-explained</id>
+    <content type="html"><![CDATA[<p>Today I've posted a page on my site explaining how the process of developing a Revit add-in works. With this page I hope I can take away the fear of developing  your own add-ins.</p>
+
+<p><a href="/pages/custom-add-in">Read here</a></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[New website released!]]></title>
+    <link href="http://tnux.net/blog/2011/08/02/new-website-released/"/>
+    <updated>2011-08-02T08:17:00+02:00</updated>
+    <id>http://tnux.net/blog/2011/08/02/new-website-released</id>
+    <content type="html"><![CDATA[<p>Earlier this week I've released my new website! My previous website was a standard WordPress blog, but I wanted more control of the blog and other pages so I've created my own site in Ruby on Rails. One of the extra functionalities I've added is a download section at the Revit pages, so everyone can try the add-ins before buying. I'm also planning to add more features in the future; like a store for add-ins, a search field and social network sharing buttons.</p>
+
+<p>This site is built on the latest release candidate of Ruby on Rails 3.1. It uses the new asset pipeline with SASS and Coffeescript. I've used test driven development as the development process, which is very suitable for a Rails project. First tests are made and subsequently the code is added to the project to make the tests pass. My code is monitored with guard and has a 100% test coverage.</p>
+
+<p>This site provides new opportunities for both my Ruby on Rails and my Revit projects. Please check out the rest of my site and if you are a Revit user, make sure you download some of my add-ins. I will be adding more of them in the upcoming days.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Couple of new Revit Add-ins]]></title>
+    <link href="http://tnux.net/blog/2011/05/30/couple-of-new-revit-add-ins/"/>
+    <updated>2011-05-30T10:45:00+02:00</updated>
+    <id>http://tnux.net/blog/2011/05/30/couple-of-new-revit-add-ins</id>
+    <content type="html"><![CDATA[<p>Just a quick update on the Revit Add-ins, I've made an add-in named: <a href="/revit/revit-tag-by-filter/">Tag By Filter</a> and <a href="/revit/revit-angle-validation/">Angle Validation</a>. Tag By Filter does exactly what you would expect: Tag elements per view which meet specific filter rules. These rules filter by element parameters and can be combined together. The Angle Validation plugin lets users check if all elements, mainly walls, are parallel or orthogonal to the grid. Both add-ins are small, fast and will save the designers a lot of time and will improve the quality of their Revit model.</p>
+]]></content>
+  </entry>
+  
+</feed>

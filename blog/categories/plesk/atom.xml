@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Plesk | Tom Pesman]]></title>
+  <link href="http://tnux.net/blog/categories/plesk/atom.xml" rel="self"/>
+  <link href="http://tnux.net/"/>
+  <updated>2013-03-23T17:07:49+01:00</updated>
+  <id>http://tnux.net/</id>
+  <author>
+    <name><![CDATA[Tom Pesman]]></name>
+    <email><![CDATA[tom@tnux.net]]></email>
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Plesk, Passenger (mod_rails), Ruby Enterprise Edition & Ruby on Rails]]></title>
+    <link href="http://tnux.net/blog/2008/06/23/plesk-passenger-mod_rails-railsenterpriseedition-ruby-on-rails/"/>
+    <updated>2008-06-23T09:57:00+02:00</updated>
+    <id>http://tnux.net/blog/2008/06/23/plesk-passenger-mod_rails-railsenterpriseedition-ruby-on-rails</id>
+    <content type="html"><![CDATA[<p>Currently I have a Plesk 8.4 installation running on a CentOS 5 VPS. First I had my Ruby on Rails websites running on multiple mongrel servers (cluster) but it took too much RAM of my VPS and it was very complicated to add more websites. So now I’ve installed <a href="http://www.modrails.com/">Passenger</a> (make sure you check the screencast on the Passenger website!) which makes adding websites very easy. Also I’ve installed <a href="http://www.rubyenterpriseedition.com/">RubyEnterpriseEdition</a> which reduces the memory needed for Ruby applications, including Ruby on Rails. Below I’ll describe the steps I took to complete this installation.</p>
+
+<p><strong>Passenger</strong></p>
+
+<p>Just follow the steps described on the Passenger website. Run as root:</p>
+
+<p><code>bash
+gem install passenger
+</code></p>
+
+<p>The following command verifies if all the dependencies are installed, if not it suggests what rpm’s should be installed and exits. If all the dependencies are met, it compiles the Apache 2 module and installs the module.</p>
+
+<p><code>bash
+passenger-install-apache2-module
+</code></p>
+
+<p>Personally I hate installers who do a lot of stuff you can't control, but this one does only the stuff it should do and will not break your current setup. After the module is installed you need to add the module to Apache. So I created the file <code>/etc/httpd/conf.d/passenger.conf</code> with the following contents:</p>
+
+<p><code>bash
+LoadModule passenger_module /usr/lib/ruby/gems/1.8/gems/passenger-2.0.1/ext/apache2/mod_passenger.so
+PassengerRoot /usr/lib/ruby/gems/1.8/gems/passenger-2.0.1
+PassengerRuby /usr/bin/ruby
+</code></p>
+
+<p>Restart Apache.</p>
+
+<p><code>bash
+/etc/init.d/httpd restart
+</code></p>
+
+<p>At this point you have installed Passenger and the only thing to make a Ruby on Rails application work, is to point the Apache <code>DocumentRoot</code> directive to the public directory of your Rails application.</p>
+
+<p><strong>RubyEnterpriseEdition</strong></p>
+
+<p>Download RubyEnterpriseEdition (REE), extract the file and run the installer. As described on the REE website.</p>
+
+<p><code>bash
+wget http://rubyforge.org/frs/download.php/38777/ruby-enterprise-1.8.6-20080624.tar.gz
+tar xzvf ruby-enterprise-1.8.6-20080624.tar.gz
+./ruby-enterprise-1.8.6-20080624/install
+</code></p>
+
+<p>This installer will install it’s own Ruby environment to /opt. This is good, because it will not touch your current Ruby environment. After the installation you’ll have a separate gem installed which is version 1.2.0. The version without the gem bulkupdate, which causes a lot of memory problems on VPS’es. The following commands I’ve used to install different gems. Mysql did not install easily, but with the <code>-- --with-mysql</code> it worked. Note the <code>--no-rdoc</code> and <code>--no-ri</code> because we’re on a production environment we don't need the documentation.</p>
+
+<p><code>bash
+/opt/ruby-enterprise-1.8.6-20080624/bin/gem install --no-rdoc --no-ri rails
+/opt/ruby-enterprise-1.8.6-20080624/bin/gem install --no-rdoc --no-ri -v 1.2.6 rails
+/opt/ruby-enterprise-1.8.6-20080624/bin/gem install --no-rdoc --no-ri -v 2.0.2 rails
+/opt/ruby-enterprise-1.8.6-20080624/bin/gem install --no-rdoc --no-ri mysql -- --with-mysql-config
+</code></p>
+
+<p>If you have all the gems installed which you need in your Rails applications, it’s time to switch the Ruby Interpreter to the REE installation, we do this by replacing the <code>PassengerRuby</code> line in the <code>/etc/httpd/conf.d/passenger.conf</code> file.</p>
+
+<p><code>bash
+PassengerRuby /opt/ruby-enterprise-1.8.6-20080624/bin/ruby
+</code></p>
+
+<p><strong>Fine-tuning</strong></p>
+
+<p>Depending on the available RAM on your VPS, you should add the following line to <code>passenger.conf</code>:</p>
+
+<p><code>bash
+PassengerMaxPoolSize 2
+</code></p>
+
+<p>To prevent Passenger from invoking to many instances of the Rails app.</p>
+
+<p><strong>Plesk</strong></p>
+
+<p>The only thing you have to do in Plesk is to modify the DocumentRoot. I've made a app directory where I deploy my Rails application with Capistrano. Create the file vhost.conf in the config directory of your domain.</p>
+
+<p><code>bash
+DocumentRoot /var/www/vhosts/DOMAIN.COM/app/current/public
+</code></p>
+
+<p>After that run the following command to let Plesk reconfigure your domain and add a include for your <code>vhost.conf</code> file.</p>
+
+<p><code>bash
+/usr/local/psa/admin/sbin/websrvmng -u --vhost-name=DOMAIN.COM
+</code></p>
+]]></content>
+  </entry>
+  
+</feed>

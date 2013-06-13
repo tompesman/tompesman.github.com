@@ -1,0 +1,180 @@
+
+<!DOCTYPE HTML>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Custom Add-in - Tom Pesman</title>
+	<meta name="author" content="Tom Pesman">
+
+	
+	<meta name="description" content="On this website I offer a number of customised add-ins for Revit, but you might be looking for some very specific needs for your company, after all: &hellip;">
+	
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<link href="http://feeds.feedburner.com/tnuxnet" rel="alternate" title="Tom Pesman" type="application/atom+xml">
+	
+	<link rel="canonical" href="http://tnux.net/pages/custom-add-in.html">
+	<link href="/favicon.png" rel="shortcut icon">
+	<link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+	<!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+	<link href='http://fonts.googleapis.com/css?family=Open+Sans:400italic,400,700' rel='stylesheet' type='text/css'>
+	<!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+</head>
+
+
+<body>
+	<div class="container">
+		<div class="left-col">
+			<div class="intrude-less">
+			<header id="header" class="inner"><div class="profilepic">
+	<img src='http://www.gravatar.com/avatar/af4530c0ca1194b83f7c6f5b415f4b69?s=160' alt='Profile Picture' style='width: 160px;'>
+</div>
+<h1><a href="/">Tom Pesman</a></h1>
+<p class="subtitle"></p>
+<nav id="main-nav"><ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+  <li><a href="/pages/revit.html">Revit</a></li>
+  <li><a href="/pages/rubyonrails.html">Ruby on Rails</a></li>
+  <li><a href="/pages/about.html">Info</a></li>
+</ul>
+</nav>
+<nav id="sub-nav">
+	<div class="social">
+		
+		
+		
+		
+		<a class="github" href="https://github.com/tompesman" title="GitHub">GitHub</a>
+		
+		
+		<a class="linkedin" href="http://www.linkedin.com/in/tompesman">LinkedIn</a>
+		
+		
+		
+		
+		
+		<a class="rss" href="http://feeds.feedburner.com/tnuxnet" title="RSS">RSS</a>
+		
+	</div>
+</nav>
+<!-- <hgroup>
+  <h1><a href="/">Tom Pesman</a></h1>
+  
+</hgroup> -->
+
+</header>				
+			</div>
+		</div>	
+		<div class="mid-col">
+			
+				
+			
+			<div class="mid-col-container">
+				<div id="content" class="inner"><article class="page">
+    
+    <h1 class="title">Custom Add-in</h1>
+    
+    <div class="entry-content"><p>On this website I offer a number of customised add-ins for Revit, but you might be looking for some very specific needs for your company, after all: every company is unique and has its own way of using Revit. Companies using Revit in their primary process aren’t generally specialized in developing software, so it can be quite a challenge hiring a software developer and letting him do things you do not understand. But, when do you need an add-in? How does the development process of an add-in look like? And what are the benefits? On this page I will try to convince you to consider hiring a software developer (preferably me!), to develop your own Revit add-ins.</p>
+
+<h2>Application Programming Interface</h2>
+
+<p>First, how does an add-in work? Autodesk provides Revit with an Application Programming Interface (API), which means that Autodesk opens up specific parts of Revit to allow access to software developers. By executing queries on your Revit model elements like doors, windows and views can be retrieved. Once these elements are fetched, various operations can be performed and saved to the model.</p>
+
+<h2>What is possible?</h2>
+
+<p>Typical add-ins will focus on data consistency and data retrieval. These two tasks are very easy for a computer program to perform and very hard for a human to perform consistently, fast and frequently. The overall quality of the model can be taken to a higher level and you can be confident the quality of the data within the model is high. Some of this functionality can he handled by the schedules within Revit itself, if possible, you should use them. When you require more complex calculations or validations on the data, the use of an add-in is unavoidable. Many repeating tasks can also be automated by an add-in. This can save the designers a lot of time.</p>
+
+<h2>Real life example</h2>
+
+<p>For example: the idea for the &#8216;Angle Validation&#8217; add-in started when in the final stages of a relatively large project in Revit a strange &#8216;snapping&#8217; behaviour was noticed. Further investigation showed that some elements where positioned in a very small angle compared to the grid. Very small is less than 0.1 degree. The side effects of this deviation were that some of the sections where not displayed properly. This problem had to be resolved. As this is a large project it is not desirable to validate the alignment of every element by hand or even by add-in. It turned out that the walls were the root of the problem, doors and windows are hosted within the wall. If we align the walls properly, the doors and windows will be correctly aligned as well. This add-in solved the problem by identifying walls that were not in the same direction or perpendicular to the grid. After aligning the misaligned walls the sections where displaying the information correct, problem solved.</p>
+
+<h2>Development process</h2>
+
+<p>The first step is to determine the actual problem. In the next phase a prototype is made, typically this prototype has a very simple user interface to show that the right information can be retrieved from and written to the model using the Revit API. The customer will test the prototype and a design and quotation of the add-in are proposed. After the approval of the quotation the new add-in will be build and will be delivered with an installer. To get an idea how much time and money this will cost, the &#8216;Angle Validation&#8217; add-in was built in less than a week and cost anywhere between &euro; 1000 and &euro; 1500. A brief overview of the steps involved in developing an add-in:</p>
+
+<ol>
+<li>Analyse</li>
+<li>Prototype</li>
+<li>Test</li>
+<li>Design and quotation</li>
+<li>Programming</li>
+<li>Testing</li>
+</ol>
+
+
+<p>When you have your own add-in you can use it on all your projects and make it part of your own design process.</p>
+
+<h2>Benefits</h2>
+
+<p>Before add-ins could be used, some tasks had to be done manually. This takes a lot of time and is very error-prone. Often these tasks are important when deadlines are close and time is running out. But with your own add-in you can run these tasks daily, whenever you want. Improving the overall quality of the model and detecting errors in an earlier stage.</p>
+
+<h2>Contact</h2>
+
+<p>If you are interested in your own add-in or have questions about the costs, please contact me (tom@tnux.net).</p>
+</div>
+</article>
+
+
+
+
+	<div class="share">
+	<div class="addthis_toolbox addthis_default_style ">
+	
+	
+	<a class="addthis_button_tweet"></a>
+	
+	
+	<a class="addthis_counter addthis_pill_style"></a>
+	</div>
+  <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid="></script>
+</div>
+
+
+
+</div>
+			</div>
+			<footer id="footer" class="inner"><p>
+  Copyright &copy; 2013 - Tom Pesman -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+			<script src="/javascripts/slash.js"></script>
+<script src="/javascripts/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+	$('.fancybox').fancybox();
+})(jQuery);
+</script> <!-- Delete or comment this line to disable Fancybox -->
+
+
+
+
+	<script type="text/javascript">
+		var _gaq = _gaq || [];
+		_gaq.push(['_setAccount', 'UA-1817613-7']);
+		_gaq.push(['_trackPageview']);
+
+		(function() {
+			var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+			ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+			var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+		})();
+	</script>
+
+
+
+
+		</div>
+	</div>
+</body>
+</html>
