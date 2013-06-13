@@ -4,7 +4,7 @@
   <title><![CDATA[Tom Pesman]]></title>
   <link href="http://tnux.net/atom.xml" rel="self"/>
   <link href="http://tnux.net/"/>
-  <updated>2013-03-23T17:07:49+01:00</updated>
+  <updated>2013-06-13T10:43:29+02:00</updated>
   <id>http://tnux.net/</id>
   <author>
     <name><![CDATA[Tom Pesman]]></name>
@@ -12,6 +12,31 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[DRS released with beta IFC exporter]]></title>
+    <link href="http://tnux.net/blog/2013/06/13/drs-released-with-beta-ifc-exporter/"/>
+    <updated>2013-06-13T08:59:00+02:00</updated>
+    <id>http://tnux.net/blog/2013/06/13/drs-released-with-beta-ifc-exporter</id>
+    <content type="html"><![CDATA[<p>Today the Dutch Revit user group (RevitGG) released the latest version of the <a href="http://revitgg.nl/index.php/7-slider/32-nieuwe-standaard-template-voor-nl">Dutch Revit Standard</a>. With some help of <a href="http://nl.linkedin.com/in/martijnderiet">Martijn de Riet</a> and Autodesk I&#8217;ve developed a modification to the <a href="http://sourceforge.net/projects/ifcexporter/">IFC Exporter for Revit</a>. It will now be possible to make a mapping file to map Revit parameters to the IFC properties. A mapping file looks like this:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>Pset_WallCommon   FireRating    fire_rating
+</span><span class='line'>Pset_WallCommon   Compartmentation  brandwerend
+</span><span class='line'>Pset_WallCommon   SurfaceSpreadOfFlame  brandklasse
+</span><span class='line'>Pset_WallCommon   Combustible   ontvlambaar
+</span><span class='line'>Pset_WallCommon   AcousticRating    luchtgeluidsisolatie</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The Revit parameter &#8216;fire_rating&#8217; will be assigned to the &#8216;FireRating&#8217; IFC property for a wall. With the Dutch standard combined with my modification to the exporter, the only thing left to do is to make a default mapping file for the Dutch Revit Standard to create a full workflow from Revit model to IFC model all within the Dutch Revit Standard. The first standardized workflow from Revit to IFC in the world!</p>
+
+<p>Later today Autodesk will release a beta version with the new functionality included.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Nummi website is online]]></title>
@@ -894,40 +919,6 @@ For my application I needed a callback to let my application know there was a fi
 
 
 <p>Hopefully I&#8217;ve saved you guys some time ;-)</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Capistrano and Passenger part 2]]></title>
-    <link href="http://tnux.net/blog/2009/12/12/capistrano-and-passenger-part-2/"/>
-    <updated>2009-12-12T10:14:00+01:00</updated>
-    <id>http://tnux.net/blog/2009/12/12/capistrano-and-passenger-part-2</id>
-    <content type="html"><![CDATA[<p>As Karl Varga pointed out in his comment on my previous post on Capistrano and Passenger (<a href="http://tnux.net/2008/06/23/capistrano-and-passenger/">here</a>) my apache rewrite rules did not send back the proper HTTP status codes. Now with the improved and tested rules the 503 status code is returned.</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>ErrorDocument 503 /system/maintenance.html
-</span><span class='line'>
-</span><span class='line'>RewriteEngine On
-</span><span class='line'>RewriteCond %<span class="o">{</span>DOCUMENT_ROOT<span class="o">}</span>/system/maintenance.html -f
-</span><span class='line'>RewriteCond %<span class="o">{</span>SCRIPT_FILENAME<span class="o">}</span> !maintenance.html
-</span><span class='line'><span class="c"># RewriteCond %{REQUEST_URI} !^/images/</span>
-</span><span class='line'><span class="c"># RewriteCond %{REQUEST_URI} !^/robots.txt</span>
-</span><span class='line'><span class="c"># RewriteCond %{REQUEST_URI} !^/sitemap</span>
-</span><span class='line'>RewriteRule ^.*<span class="nv">$ </span>– <span class="o">[</span><span class="nv">redirect</span><span class="o">=</span>503,last<span class="o">]</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>If your maintenance page has images on it than you can enable line 6 by removing the &#8216;#&#8217;.</p>
-
-<p>See also <a href="http://www.shiftcommathree.com/articles/make-your-rails-maintenance-page-respond-with-a-503">Chris K&#8217;s</a> article.</p>
 ]]></content>
   </entry>
   

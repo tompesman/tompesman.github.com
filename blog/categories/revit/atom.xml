@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Revit | Tom Pesman]]></title>
   <link href="http://tnux.net/blog/categories/revit/atom.xml" rel="self"/>
   <link href="http://tnux.net/"/>
-  <updated>2013-03-23T17:07:49+01:00</updated>
+  <updated>2013-06-13T10:43:29+02:00</updated>
   <id>http://tnux.net/</id>
   <author>
     <name><![CDATA[Tom Pesman]]></name>
@@ -12,6 +12,27 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[DRS released with beta IFC exporter]]></title>
+    <link href="http://tnux.net/blog/2013/06/13/drs-released-with-beta-ifc-exporter/"/>
+    <updated>2013-06-13T08:59:00+02:00</updated>
+    <id>http://tnux.net/blog/2013/06/13/drs-released-with-beta-ifc-exporter</id>
+    <content type="html"><![CDATA[<p>Today the Dutch Revit user group (RevitGG) released the latest version of the <a href="http://revitgg.nl/index.php/7-slider/32-nieuwe-standaard-template-voor-nl">Dutch Revit Standard</a>. With some help of <a href="http://nl.linkedin.com/in/martijnderiet">Martijn de Riet</a> and Autodesk I've developed a modification to the <a href="http://sourceforge.net/projects/ifcexporter/">IFC Exporter for Revit</a>. It will now be possible to make a mapping file to map Revit parameters to the IFC properties. A mapping file looks like this:</p>
+
+<p><code>
+Pset_WallCommon   FireRating    fire_rating
+Pset_WallCommon   Compartmentation  brandwerend
+Pset_WallCommon   SurfaceSpreadOfFlame  brandklasse
+Pset_WallCommon   Combustible   ontvlambaar
+Pset_WallCommon   AcousticRating    luchtgeluidsisolatie
+</code></p>
+
+<p>The Revit parameter 'fire_rating' will be assigned to the 'FireRating' IFC property for a wall. With the Dutch standard combined with my modification to the exporter, the only thing left to do is to make a default mapping file for the Dutch Revit Standard to create a full workflow from Revit model to IFC model all within the Dutch Revit Standard. The first standardized workflow from Revit to IFC in the world!</p>
+
+<p>Later today Autodesk will release a beta version with the new functionality included.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Free Auto Number Add-in and x86 add-ins]]></title>
@@ -58,15 +79,6 @@
 <p>This site is built on the latest release candidate of Ruby on Rails 3.1. It uses the new asset pipeline with SASS and Coffeescript. I've used test driven development as the development process, which is very suitable for a Rails project. First tests are made and subsequently the code is added to the project to make the tests pass. My code is monitored with guard and has a 100% test coverage.</p>
 
 <p>This site provides new opportunities for both my Ruby on Rails and my Revit projects. Please check out the rest of my site and if you are a Revit user, make sure you download some of my add-ins. I will be adding more of them in the upcoming days.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Couple of new Revit Add-ins]]></title>
-    <link href="http://tnux.net/blog/2011/05/30/couple-of-new-revit-add-ins/"/>
-    <updated>2011-05-30T10:45:00+02:00</updated>
-    <id>http://tnux.net/blog/2011/05/30/couple-of-new-revit-add-ins</id>
-    <content type="html"><![CDATA[<p>Just a quick update on the Revit Add-ins, I've made an add-in named: <a href="/revit/revit-tag-by-filter/">Tag By Filter</a> and <a href="/revit/revit-angle-validation/">Angle Validation</a>. Tag By Filter does exactly what you would expect: Tag elements per view which meet specific filter rules. These rules filter by element parameters and can be combined together. The Angle Validation plugin lets users check if all elements, mainly walls, are parallel or orthogonal to the grid. Both add-ins are small, fast and will save the designers a lot of time and will improve the quality of their Revit model.</p>
 ]]></content>
   </entry>
   

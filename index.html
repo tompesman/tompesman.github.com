@@ -7,7 +7,7 @@
 	<meta name="author" content="Tom Pesman">
 
 	
-	<meta name="description" content="Together with my sister we&#8217;ve released the website for the iOS application nummi! Shortly we will be able to publish the app in the AppStore. &hellip;">
+	<meta name="description" content="Today the Dutch Revit user group (RevitGG) released the latest version of the Dutch Revit Standard. With some help of Martijn de Riet and Autodesk I &hellip;">
 	
 
   <!-- http://t.co/dKP3o1e -->
@@ -80,6 +80,57 @@
 			
 			<div class="mid-col-container">
 				<div id="content" class="inner">
+
+
+    <article class="post">
+	<div class="meta">
+		<div class="date">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-06-13T08:59:00+02:00" pubdate data-updated="true">Jun 13<span>th</span>, 2013</time></div>
+		<div class="tags">
+
+
+	<a class='category' href='/blog/categories/revit/'>Revit</a>
+
+
+</div>
+		
+	</div>
+	<h1 class="title"><a href="/blog/2013/06/13/drs-released-with-beta-ifc-exporter/">DRS Released With Beta IFC Exporter</a></h1>
+	<div class="entry-content">
+		<p>Today the Dutch Revit user group (RevitGG) released the latest version of the <a href="http://revitgg.nl/index.php/7-slider/32-nieuwe-standaard-template-voor-nl">Dutch Revit Standard</a>. With some help of <a href="http://nl.linkedin.com/in/martijnderiet">Martijn de Riet</a> and Autodesk I&#8217;ve developed a modification to the <a href="http://sourceforge.net/projects/ifcexporter/">IFC Exporter for Revit</a>. It will now be possible to make a mapping file to map Revit parameters to the IFC properties. A mapping file looks like this:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>Pset_WallCommon   FireRating    fire_rating
+</span><span class='line'>Pset_WallCommon   Compartmentation  brandwerend
+</span><span class='line'>Pset_WallCommon   SurfaceSpreadOfFlame  brandklasse
+</span><span class='line'>Pset_WallCommon   Combustible   ontvlambaar
+</span><span class='line'>Pset_WallCommon   AcousticRating    luchtgeluidsisolatie</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The Revit parameter &#8216;fire_rating&#8217; will be assigned to the &#8216;FireRating&#8217; IFC property for a wall. With the Dutch standard combined with my modification to the exporter, the only thing left to do is to make a default mapping file for the Dutch Revit Standard to create a full workflow from Revit model to IFC model all within the Dutch Revit Standard. The first standardized workflow from Revit to IFC in the world!</p>
+
+<p>Later today Autodesk will release a beta version with the new functionality included.</p>
+
+		
+		
+	</div>
+
+</article>
 
 
     <article class="post">
@@ -481,43 +532,6 @@
 	<h1 class="title"><a href="/blog/2011/01/15/first-paid-app-online/">First Paid App Online</a></h1>
 	<div class="entry-content">
 		<p>Yesterday I&#8217;ve released my first paid application in the Revit App Store. It is an extended version of the Auto Number Parking Component application. This version allows the user to update the Mark parameter of all Families with the Mark parameter. The free version is also updated and is restricted to update only Parking Components. So if you are in doubt this application will perform as you would expect, try the free version first. If you have any suggestions or comments, please let me know.</p>
-
-		
-		
-	</div>
-
-</article>
-
-
-    <article class="post">
-	<div class="meta">
-		<div class="date">
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2010-11-12T10:40:00+01:00" pubdate data-updated="true">Nov 12<span>th</span>, 2010</time></div>
-		<div class="tags">
-
-
-	<a class='category' href='/blog/categories/revit/'>Revit</a>
-
-
-</div>
-		
-	</div>
-	<h1 class="title"><a href="/blog/2010/11/12/revit-app-store/">Revit App Store</a></h1>
-	<div class="entry-content">
-		<p>Today I published my first app in the <a href="http://www.revitappstore.com/">Revit App Store</a>. I think this way of distributing small add-ins for Revit can be very useful. As the first apps are distributed for free, I decided to make a small app that automatically numbers the parking spaces. If an user selects multiple parking lots, the user can specify a prefix, postfix, starting value and an interval for the numbering. The tool will also detect if the user will make duplicate mark values within the model, as duplicate marks are not preferable within Revit models.</p>
-
-<p>I&#8217;m very curious how this App Store is developing in the upcoming months, as this can be a great opportunity for both developers and users of Revit. At this point the store isn&#8217;t very mature yet, for example, I think the buttons of the actual applications are located in a window of the app store in a secondary page, two mouse clicks away. I think the buttons should be located in the ribbon, directly accessible by the user. Anyway I keep an eye on the development of this app store.</p>
 
 		
 		

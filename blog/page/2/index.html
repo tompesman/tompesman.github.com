@@ -7,7 +7,7 @@
 	<meta name="author" content="Tom Pesman">
 
 	
-	<meta name="description" content="Amazons S3 added this summer a new way to allow people to access your files stored on S3. This method is called Query String Authentication and by &hellip;">
+	<meta name="description" content="Today I published my first app in the Revit App Store. I think this way of distributing small add-ins for Revit can be very useful. As the first &hellip;">
 	
 
   <!-- http://t.co/dKP3o1e -->
@@ -80,6 +80,43 @@
 			
 			<div class="mid-col-container">
 				<div id="content" class="inner">
+
+
+    <article class="post">
+	<div class="meta">
+		<div class="date">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2010-11-12T10:40:00+01:00" pubdate data-updated="true">Nov 12<span>th</span>, 2010</time></div>
+		<div class="tags">
+
+
+	<a class='category' href='/blog/categories/revit/'>Revit</a>
+
+
+</div>
+		
+	</div>
+	<h1 class="title"><a href="/blog/2010/11/12/revit-app-store/">Revit App Store</a></h1>
+	<div class="entry-content">
+		<p>Today I published my first app in the <a href="http://www.revitappstore.com/">Revit App Store</a>. I think this way of distributing small add-ins for Revit can be very useful. As the first apps are distributed for free, I decided to make a small app that automatically numbers the parking spaces. If an user selects multiple parking lots, the user can specify a prefix, postfix, starting value and an interval for the numbering. The tool will also detect if the user will make duplicate mark values within the model, as duplicate marks are not preferable within Revit models.</p>
+
+<p>I&#8217;m very curious how this App Store is developing in the upcoming months, as this can be a great opportunity for both developers and users of Revit. At this point the store isn&#8217;t very mature yet, for example, I think the buttons of the actual applications are located in a window of the app store in a secondary page, two mouse clicks away. I think the buttons should be located in the ribbon, directly accessible by the user. Anyway I keep an eye on the development of this app store.</p>
+
+		
+		
+	</div>
+
+</article>
 
 
     <article class="post">
@@ -1008,66 +1045,6 @@ For my application I needed a callback to let my application know there was a fi
 
 
 <p>Hopefully I&#8217;ve saved you guys some time ;-)</p>
-
-		
-		
-	</div>
-
-</article>
-
-
-    <article class="post">
-	<div class="meta">
-		<div class="date">
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2009-12-12T10:14:00+01:00" pubdate data-updated="true">Dec 12<span>th</span>, 2009</time></div>
-		<div class="tags">
-
-
-	<a class='category' href='/blog/categories/ruby-on-rails/'>Ruby on Rails</a>
-
-
-</div>
-		
-	</div>
-	<h1 class="title"><a href="/blog/2009/12/12/capistrano-and-passenger-part-2/">Capistrano and Passenger Part 2</a></h1>
-	<div class="entry-content">
-		<p>As Karl Varga pointed out in his comment on my previous post on Capistrano and Passenger (<a href="http://tnux.net/2008/06/23/capistrano-and-passenger/">here</a>) my apache rewrite rules did not send back the proper HTTP status codes. Now with the improved and tested rules the 503 status code is returned.</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>ErrorDocument 503 /system/maintenance.html
-</span><span class='line'>
-</span><span class='line'>RewriteEngine On
-</span><span class='line'>RewriteCond %<span class="o">{</span>DOCUMENT_ROOT<span class="o">}</span>/system/maintenance.html -f
-</span><span class='line'>RewriteCond %<span class="o">{</span>SCRIPT_FILENAME<span class="o">}</span> !maintenance.html
-</span><span class='line'><span class="c"># RewriteCond %{REQUEST_URI} !^/images/</span>
-</span><span class='line'><span class="c"># RewriteCond %{REQUEST_URI} !^/robots.txt</span>
-</span><span class='line'><span class="c"># RewriteCond %{REQUEST_URI} !^/sitemap</span>
-</span><span class='line'>RewriteRule ^.*<span class="nv">$ </span>– <span class="o">[</span><span class="nv">redirect</span><span class="o">=</span>503,last<span class="o">]</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>If your maintenance page has images on it than you can enable line 6 by removing the &#8216;#&#8217;.</p>
-
-<p>See also <a href="http://www.shiftcommathree.com/articles/make-your-rails-maintenance-page-respond-with-a-503">Chris K&#8217;s</a> article.</p>
 
 		
 		
