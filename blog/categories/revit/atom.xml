@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Revit | Tom Pesman]]></title>
   <link href="http://tnux.net/blog/categories/revit/atom.xml" rel="self"/>
   <link href="http://tnux.net/"/>
-  <updated>2013-06-13T10:43:29+02:00</updated>
+  <updated>2013-06-14T11:23:37+02:00</updated>
   <id>http://tnux.net/</id>
   <author>
     <name><![CDATA[Tom Pesman]]></name>
@@ -31,6 +31,8 @@ Pset_WallCommon   AcousticRating    luchtgeluidsisolatie
 <p>The Revit parameter 'fire_rating' will be assigned to the 'FireRating' IFC property for a wall. With the Dutch standard combined with my modification to the exporter, the only thing left to do is to make a default mapping file for the Dutch Revit Standard to create a full workflow from Revit model to IFC model all within the Dutch Revit Standard. The first standardized workflow from Revit to IFC in the world!</p>
 
 <p>Later today Autodesk will release a beta version with the new functionality included.</p>
+
+<p>Update: Beta is online <a href="http://sourceforge.net/projects/ifcexporter/files/">now</a>!</p>
 ]]></content>
   </entry>
   
